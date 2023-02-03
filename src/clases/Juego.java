@@ -1,6 +1,8 @@
 package clases;
 
 import java.util.Scanner;
+
+import excepciones.NoMoreCardsException;
 /**
  * 
  * @author prgmsserv
@@ -40,27 +42,20 @@ public class Juego {
 				String quierecarta = teclado.nextLine();
 				if (quierecarta.equals("S") || quierecarta.equals("s")) {
 					// Pide carta al mazo
-					manoJugador.pedirCarta(mazoJuego);
+					try {
+						manoJugador.pedirCarta(mazoJuego);
+					} catch (NoMoreCardsException e) {
+						// TODO Bloque catch generado automáticamente
+						e.printStackTrace();
+					}
 					// Muestra los datos
 					System.out.println(
 							"Tu mano tiene " + manoJugador.valorMano() + " puntos.\nCartas:\n" + manoJugador.toString());
 					juego(mazoJuego, manoJugador);
-				} else if (quierecarta.equals("N") || quierecarta.equals("n")) {
-					// Vuelve al principio con el mazo del juego y la mano del jugador. (Medida de
-					// control para no perder los datos.)
+				} 	
+				//Comienza el juego de la máquina
 					maquina();
-				}
 			}
-		// Si el valor de la mano es 21, el jugador ganará. Y se le preguntará si quiere jugar de nuevo.
-			if (manoJugador.valorMano() == 21) {
-				System.out.println("¡Has ganado al crupier!");
-				jugardenuevo();
-			}
-			// Si la mano hace que acabe el juego, perderá.
-			if (manoJugador.findeJuego()) {
-				System.out.println("Has perdido.");
-				jugardenuevo();
-			}	
 		}
 		
 		
@@ -89,20 +84,24 @@ public class Juego {
 		// menor o igual al del jugador y el valor de la máquina sea menor o igual a 21, sigue jugando.
 		while((manoMaquina.valorMano()<=manoJugador.valorMano()) && (manoMaquina.valorMano()<=21)) {
 			// Continúa pidiendo cartas.
-		manoMaquina.pedirCarta(mazoJuego);	
+		try {
+			manoMaquina.pedirCarta(mazoJuego);
+		} catch (NoMoreCardsException e) {
+			e.printStackTrace();
+		}	
 		}
 		// Una vez terminado, se comprueba la puntuación.
 		compruebapuntuacion();
 	}
 	protected static void compruebapuntuacion() {
-		if((manoMaquina.valorMano()==21 && manoJugador.valorMano()==21) || ((manoMaquina.valorMano() > manoJugador.valorMano()) && (manoMaquina.valorMano()<=21))) {
+		if((manoMaquina.valorMano()==21 && manoJugador.valorMano()==21) || ((manoMaquina.valorMano() > manoJugador.valorMano()) && (manoMaquina.valorMano()<=21)) || (manoJugador.valorMano()>21)) {
 			System.out.println(
 					"La mano del jugador tiene " + manoJugador.valorMano() + " puntos.\nCartas:\n" + manoJugador.toString());
 			System.out.println(
 					"La mano de la máquina tiene " + manoMaquina.valorMano() + " puntos.\nCartas:\n" + manoMaquina.toString());
 			System.out.println("Pierdes.");
 			jugardenuevo();
-		}else if(manoMaquina.valorMano()>21 || manoMaquina.valorMano()<manoJugador.valorMano()){
+		}else{
 			System.out.println(
 					"La mano del jugador tiene " + manoJugador.valorMano() + " puntos.\nCartas:\n" + manoJugador.toString());
 			System.out.println(

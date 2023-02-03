@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import clases.Carta.Palo;
+import excepciones.NoMoreCardsException;
 /**
  * 
  * @author prgmsserv
@@ -12,7 +13,7 @@ import clases.Carta.Palo;
  */
 public class Mazo {
 	// Creamos la lista de Cartas como un List de Carta.
-	private List<Carta> mazoCartas;
+	public List<Carta> mazoCartas;
 
 	public Mazo() {
 		// La lista de Cartas pasa a ser un ArrayList de Carta.
@@ -40,14 +41,18 @@ public class Mazo {
 		String i = "";
 		// Para cada Carta en la lista (ArrayList), devuelve el toString de Carta y lo suma a la cadena.
 		for (Carta carta : this.mazoCartas) {
-			i = i + carta.toString();
+			i = i + carta.toString()+"\n";
 		}
 		// Devuelve la cadena i.
 		return i;
 	}
 
 	// Método solicitarCarta([sin parámetros]) - Devuelve la primera carta del mazo, y la elimina del mismo.
-	protected Carta solicitarCarta() {
+	protected Carta solicitarCarta() throws NoMoreCardsException{
+		if(this.mazoCartas.size()==0) {
+			throw new NoMoreCardsException();
+		}
+		this.barajar();
 		// Creamos una nueva Carta, que es la primera del mazo.
 		Carta devuelta = this.mazoCartas.get(0);
 		// La eliminamos.

@@ -1,21 +1,20 @@
 package clases;
 
 import java.util.ArrayList;
-import java.util.List;
+import excepciones.NoMoreCardsException;
 /**
  * 
  * @author prgmsserv
  *	CLASE MAZO --> MANO (sin parámetros)
  */
 public class Mano extends Mazo {
-	// Creamos la lista de Cartas del Jugador como un List de Carta.
-	protected List<Carta> manoJugador;
 	//Contructor sin parámetros.
 	protected Mano() {
-		// La lista anterior, la definimos como un ArrayList de Carta.
-		manoJugador = new ArrayList<Carta>();
+		// Creamos la lista de Cartas del Jugador como un List de Carta.
+		super();
+		this.mazoCartas = new ArrayList<Carta>();
 		// Y la establecemos como vacía.
-		manoJugador.clear();
+		this.mazoCartas.clear();
 	}
 	
 	// Método valorMano([sin parámetros]) - Devuelve el valor completo de la mano.
@@ -23,7 +22,7 @@ public class Mano extends Mazo {
 		// Establecemos el valor inicial a 0.
 		int valor = 0;
 		// Para cada carta en la mano del jugador:
-		for (Carta carta : manoJugador) {
+		for (Carta carta : this.mazoCartas) {
 			// El valor es el valor más el valor de la carta.
 			valor = valor + carta.getValor();
 		}
@@ -45,21 +44,17 @@ public class Mano extends Mazo {
 	// Método toString([sin parámetros]) - Devuelve todas las cartas de la mano.
 	public String toString() {
 		// Establecemos una cadena vacía, que se devolverá.
-		String i = "";
-		// Para cada carta en la mano:
-		for (Carta carta : manoJugador) {
-			// Se añade el toString de la carta a la cadena vacía.
-			i = i + carta.toString() + "\n";
-		}
-		// Y devolvemos la cadena completa.
+		String i = "Valor de la Mano: "+this.valorMano()+"\n";
+		// Y devolvemos la cadena completa, junto al toString de la clase padre (super).
+		i=i+super.toString();
 		return i;
 
 	}
 	
-	// Método pedirCarta(Mazo)
-	public void pedirCarta(Mazo m) {
+	// Método pedirCarta(Mazo) 
+	public void pedirCarta(Mazo m) throws NoMoreCardsException {
 		// A la mano del jugador, se le añade una carta, que se solicita al Mazo parametrizado.
-		manoJugador.add(m.solicitarCarta());
+		this.mazoCartas.add(m.solicitarCarta());
 	}
 
 }
